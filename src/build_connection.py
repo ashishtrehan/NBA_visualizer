@@ -29,16 +29,19 @@ def get_proxies():
 def proxy_cycling(url):
     proxies = get_proxies()
     proxy_pool = cycle(proxies)
+    proxies_list = []
     for i in range(1,len(proxies)):
         proxy = next(proxy_pool)
         print("Request {0}".format(i))
         try:
             response = requests.get(url, proxies={"http": proxy, "https": proxy})
-            print(response.json())
+            r = response.json()
+            proxies_list.add(r)
+            print(r)
         except:
             # Most free proxies will often get connection errors. You will have retry the entire request using another proxy to work.
             # We will just skip retries as its beyond the scope of this tutorial and we are only downloading a single url
             print("Skipping. Connnection error")
-    return
+    return proxies
 
 print (proxy_cycling(url))
