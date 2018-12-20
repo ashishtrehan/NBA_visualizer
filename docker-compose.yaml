@@ -22,5 +22,20 @@ services:
     env_file:
       - dev-docker/db.env
 
+  redis:
+    image: 'redis:3.2.8'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    labels:
+      kompose.service.type: nodeport
+    expose:
+      - '6379'
+    ports:
+      - '6379:6379'
+    restart: always
+    env_file:
+      - dev-docker/local_redis.env
+
 
 #PGPASSWORD=password psql -h localhost -p 8432 -d db -U read_write_user -f insert_loans_data.psql
